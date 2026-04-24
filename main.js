@@ -8,80 +8,83 @@ init();
 animate();
 
 function init() {
-    // 1. Scène
+    const container = document.getElementById('container3d');
+
+    // Scène & Caméra
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf5f5f5);
+    scene.background = new THREE.Color(0xf1f1f1);
 
-    // 2. Caméra
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(10, 5, 10);
+    camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.set(8, 5, 8);
 
-    // 3. Rendu (Renderer)
+    // Rendu
     renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    document.body.appendChild(renderer.domElement);
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
 
-    // 4. Lumières
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    // Lumières
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-    dirLight.position.set(5, 10, 7.5);
-    scene.add(dirLight);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    sunLight.position.set(5, 10, 7.5);
+    scene.add(sunLight);
 
-    // 5. Contrôles de souris
+    // Contrôles
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // 6. Chargement du modèle (Placez votre fichier 'module.glb' dans le même dossier)
+    // Chargement du modèle GLB
     const loader = new GLTFLoader();
-    loader.load('module.glb', function (gltf) {
+    loader.load('module.glb', (gltf) => {
         model = gltf.scene;
         scene.add(model);
         
-        // Centrer le modèle automatiquement
+        // Centrer l'objet
         const box = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
         model.position.sub(center);
-        
-    }, undefined, function (error) {
-        console.error('Erreur lors du chargement :', error);
-        alert('Fichier "module.glb" non trouvé. Lisez le fichier README.');
     });
 
-    window.addEventListener('resize', onWindowResize, false);
+    // Gestion de la taille (Scale)
+    document.getElementById('sizeSelector').addEventListener('change', (e) => {
+        const scale = parseFloat(e.target.value);
+        if (model) model.scale.set(scale, 1, 1); // On étire sur l'axe X
+    });
+
+    window.addEventListener('resize', onWindowResize);
 }
 
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    const container = document.getElementById('container3d');
+    camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.clientWidth, container.clientHeight);
 }
 
 function animate() {
     requestAnimationFrame(animate);
-    controls.update();
+    if (controls) controls.update();
     renderer.render(scene, camera);
 }
 
-// Fonctions interactives appelées par les boutons HTML
-window.changeColor = function(colorHex) {
+// Fonctions globales pour les boutons HTML
+window.changeColor = (color) => {
     if (!model) return;
     model.traverse((child) => {
-        if (child.isMesh) {
-            child.material.color.setHex(colorHex);
+        if (child.isMesh && child.name.includes('Paroi')) { // Cible les objets nommés "Paroi"
+            child.material.color.setHex(color);
         }
     });
 };
 
-window.toggleVisibility = function(objectName) {
+window.toggleOption = (name) => {
     if (!model) return;
-    // Recherche un objet par son nom défini dans Vectorworks/Blender
-    const obj = model.getObjectByName(objectName);
-    if (obj) {
-        obj.visible = !obj.visible;
-    } else {
-        alert("Objet '" + objectName + "' non trouvé. Vérifiez les noms dans votre fichier 3D.");
-    }
+    model.traverse((child) => {
+        if (child.name.includes(name)) {
+            child.visible = !child.visible;
+        }
+    });
 };
