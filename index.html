@@ -1,32 +1,38 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurateur 3D - LOCLI Nîmes</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="ui-container">
-        <h1>Configurateur Module LOCLI</h1>
-        <p>Utilisez la souris pour pivoter (clic gauche) et zoomer (molette).</p>
-        <div class="controls">
-            <button onclick="changeColor(0x2c3e50)">Gris Anthracite</button>
-            <button onclick="changeColor(0xffffff)">Blanc Pur</button>
-            <button onclick="changeColor(0x27ae60)">Vert Éco</button>
-            <hr>
-            <button onclick="toggleVisibility('Toit')">Afficher/Masquer Toit</button>
+<div id="sidebar">
+    <div class="header">
+        <img src="logo-locli.png" alt="LOCLI" style="width: 100px;">
+        <h3>Configurateur 3D</h3>
+    </div>
+
+    <div class="step">
+        <label>1. Type de Module</label>
+        <select id="moduleType">
+            <option value="standard">Bungalow Chantier</option>
+            <option value="re2020">Module RE2020</option>
+        </select>
+    </div>
+
+    <div class="step">
+        <label>2. Longueur (m)</label>
+        <div class="range-group">
+            <input type="range" min="3" max="12" value="6" step="3">
+            <span>6m</span>
         </div>
     </div>
-    
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
-    <script type="module" src="main.js"></script>
-</body>
-</html>
+
+    <div class="step">
+        <label>3. Personnalisation</label>
+        <div class="btn-grid">
+            <button onclick="changeColor(0x34495e)" style="background:#34495e;"></button>
+            <button onclick="changeColor(0xecf0f1)" style="background:#ecf0f1;"></button>
+            <button onclick="changeColor(0x27ae60)" style="background:#27ae60;"></button>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" id="clim" onchange="toggleOption('Clim')"> Climatisation
+        </div>
+    </div>
+
+    <div class="footer-sidebar">
+        <button class="quote-btn">Demander un devis</button>
+    </div>
+</div>
