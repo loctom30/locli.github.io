@@ -37,7 +37,7 @@ function init() {
     const loader = new GLTFLoader();
     loader.load('module.glb', (gltf) => {
         model = gltf.scene;
-        model.rotation.x = Math.PI; // Pivote de 180 degrés
+        //model.rotation.x = Math.PI; // Pivote de 180 degrés
         model.rotation.y = Math.PI; // Pivote de 180 degrés
         scene.add(model);
         
