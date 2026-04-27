@@ -72,14 +72,28 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-// Fonctions globales pour les boutons HTML
-window.changeColor = (color) => {
+// Fonction universelle pour changer la couleur d'une partie spécifique
+window.changePartColor = (keyword, colorHex) => {
     if (!model) return;
+    
     model.traverse((child) => {
-        if (child.isMesh && child.name.includes('Paroi')) { // Cible les objets nommés "Paroi"
-            child.material.color.setHex(color);
+        // On vérifie si l'objet est un Mesh et si son nom contient le mot-clé
+        if (child.isMesh && child.name.includes(keyword)) {
+            // Création d'un nouveau matériau pour ne pas modifier les autres objets
+            // qui partageraient éventuellement le même matériau
+            child.material = child.material.clone();
+            child.material.color.setHex(colorHex);
+        }
+        if (child.name.includes('Menuiserie')) {
+            child.material.metalness = 0.7; // Aspect métallique
+            child.material.roughness = 0.2; // Aspect lisse/brillant
         }
     });
+};
+
+// On garde l'ancienne pour les murs en la redirigeant vers la nouvelle
+window.changeColor = (colorHex) => {
+    changePartColor('Paroi', colorHex);
 };
 
 window.toggleOption = (name) => {
