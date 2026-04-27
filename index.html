@@ -14,6 +14,25 @@
         </div>
 
         <div class="config-section">
+            <label>Couleur des Parois</label>
+            <div class="color-grid">
+                <button class="color-btn" style="background:#2c3e50" title="Gris Anthracite" onclick="changePartColor('Paroi', 0x2c3e50)"></button>
+                <button class="color-btn" style="background:#ecf0f1" title="Blanc" onclick="changePartColor('Paroi', 0xecf0f1)"></button>
+                <button class="color-btn" style="background:#95a5a6" title="Gris Clair" onclick="changePartColor('Paroi', 0x95a5a6)"></button>
+                <button class="color-btn" style="background:#27ae60" title="Vert" onclick="changePartColor('Paroi', 0x27ae60)"></button>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <label>Couleur Menuiseries (Portes/Fenêtres)</label>
+            <div class="color-grid">
+                <button class="color-btn" style="background:#000000" title="Noir" onclick="changePartColor('Menuiserie', 0x000000)"></button>
+                <button class="color-btn" style="background:#ffffff" title="Blanc" onclick="changePartColor('Menuiserie', 0xffffff)"></button>
+                <button class="color-btn" style="background:#34495e" title="Bleu Nuit" onclick="changePartColor('Menuiserie', 0x34495e)"></button>
+            </div>
+        </div>
+
+        <div class="config-section">
             <label>Dimensions du module</label>
             <select id="sizeSelector">
                 <option value="1">Standard (6m)</option>
@@ -23,37 +42,14 @@
         </div>
 
         <div class="config-section">
-            <label>Couleur Extérieure</label>
-            <div class="color-grid">
-                <button class="color-btn" style="background:#2c3e50" onclick="changeColor(0x2c3e50)"></button>
-                <button class="color-btn" style="background:#ecf0f1" onclick="changeColor(0xecf0f1)"></button>
-                <button class="color-btn" style="background:#27ae60" onclick="changeColor(0x27ae60)"></button>
-                <button class="color-btn" style="background:#2980b9" onclick="changeColor(0x2980b9)"></button>
-            </div>
-        </div>
-
-    <div class="config-section">
-        <label>Couleur Menuiseries (Portes/Fenêtres)</label>
-        <div class="color-grid">
-            <button class="color-btn" style="background:#000000" onclick="changePartColor('Menuiserie', 0x000000)"></button>
-            <button class="color-btn" style="background:#7f8c8d" onclick="changePartColor('Menuiserie', 0x7f8c8d)"></button>
-            <button class="color-btn" style="background:#ffffff" onclick="changePartColor('Menuiserie', 0xffffff)"></button>
-        </div>
-    </div>
-
-        <div class="config-section">
-            <label>Options</label>
+            <label>Options de vue</label>
             <div class="option-item">
-                <input type="checkbox" id="checkToit" onchange="toggleOption('Toit')">
+                <input type="checkbox" onchange="toggleOption('Toit')">
                 <span>Masquer le toit</span>
             </div>
-            <div class="option-item">
-                <input type="checkbox" id="checkClim" onchange="toggleOption('Clim')">
-                <span>Unité Climatisation</span>
-            </div>
         </div>
 
-        <button class="cta-button" onclick="alert('Demande envoyée pour ce module !')">OBTENIR UN DEVIS</button>
+        <button class="cta-button" onclick="alert('Demande de devis envoyée !')">OBTENIR UN DEVIS</button>
     </div>
 
     <div id="container3d"></div>
